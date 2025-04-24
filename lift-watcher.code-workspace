@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"name": "lift-watcher",
+			"path": "."
+		},
+		{
+			"name": "app",
+			"path": "../../../test_app/Lift_Watcher/app"
+		},
+		{
+			"name": "app-example",
+			"path": "../../../test_app/Lift_Watcher/app-example"
+		},
+		{
+			"name": "assets",
+			"path": "../../../test_app/Lift_Watcher/assets"
+		},
+		{
+			"name": "ios",
+			"path": "../../../test_app/Lift_Watcher/ios"
+		},
+		{
+			"name": "node_modules",
+			"path": "../../../test_app/Lift_Watcher/node_modules"
+		}
+	],
+	"settings": {}
+}

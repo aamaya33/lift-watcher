@@ -1,0 +1,52 @@
+{
+  "expo": {
+    "name": "terrierShowdown",
+    "slug": "terrierShowdown",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "/assets/images/icon.png",
+    "scheme": "510745568169-lft0kp2j401k775h4pc6tq7qu3crdr0v",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "bundleIdentifier": "com.llechuga03.terriershowdown",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.llechuga03.terriershowdown",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/Terrier-Showdown.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#C21F31"
+        }
+      ],
+      "expo-sqlite"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "767d7007-1903-42f7-8341-c94b7f331286"
+      }
+    }
+  }
+}
