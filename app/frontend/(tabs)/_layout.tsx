@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { Stack, Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { CustomTabBar } from '@/app/frontend/components/bottomNav';
 
@@ -10,6 +10,7 @@ export default function TabLayout() {
         headerStyle: {
             backgroundColor: '#25292e',
         },
+        headerShown: false,
         headerShadowVisible: false,
         headerTintColor: '#fff',
         tabBarStyle: {
@@ -17,7 +18,7 @@ export default function TabLayout() {
             height: 70, // Increased height
         },
         tabBarIconStyle: {
-            width: 30, // Bigger icon container
+            width: 30, 
             height: 30,
         }
       }}
@@ -28,7 +29,7 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'home' : 'home-outline'} color={color} size={28} />
+            <Ionicons name={focused ? 'home' : 'home-outline'} color={color} size={40} />
           ),
         }}
       />
@@ -37,26 +38,17 @@ export default function TabLayout() {
         options={{
           title: 'Lifts',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'barbell' : 'barbell-outline'} color={color} size={28}/>
+            <Ionicons name={focused ? 'barbell' : 'barbell-outline'} color={color} size={40}/>
           ),
         }}
       />
-      
-      {/* Add a hidden screen for the middle button */}
-      {/* <Tabs.Screen
-        name="addWorkout"
-        options={{
-          title: 'Add',
-          tabBarButton: () => null, // Hide the default tab button
-        }}
-      /> */}
       
       <Tabs.Screen
         name="about"
         options={{
           title: 'About',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={28}/>
+            <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={40}/>
           ),
         }}
       />
@@ -65,7 +57,7 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'id-card' : 'id-card-outline'} color={color} size={28}/>
+            <Ionicons name={focused ? 'id-card' : 'id-card-outline'} color={color} size={40}/>
           ),
         }}
        />

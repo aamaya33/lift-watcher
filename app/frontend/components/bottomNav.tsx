@@ -24,7 +24,7 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
           navigation.navigate('addWorkout');
         }}
       >
-        <Ionicons name="add" color="#fff" size={32} />
+        <Ionicons name="add" color="#fff" size={72} />
       </TouchableOpacity>
       
       {/* Right section tabs */}
@@ -41,7 +41,7 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
 function renderTabItem(route, index, activeIndex, descriptors, navigation) {
   const { options } = descriptors[route.key];
   const isFocused = activeIndex === index;
-  const labelColor = isFocused ? '#cc0909' : '#fff';
+  const labelColor = isFocused ? '#c21f31' : '#fff';
   return (
     <TouchableOpacity
       key={route.key}
@@ -50,9 +50,9 @@ function renderTabItem(route, index, activeIndex, descriptors, navigation) {
     >
       {options.tabBarIcon && 
         options.tabBarIcon({ 
-          color: isFocused ? '#cc0909' : '#fff', 
+          color: isFocused ? '#c21f31' : '#fff', 
           focused: isFocused, 
-          size: 28
+          size: 48
         })}
       
       <View style={styles.labelContainer}>
@@ -60,18 +60,27 @@ function renderTabItem(route, index, activeIndex, descriptors, navigation) {
           {options.title}
         </Text>
       </View>
+      <View style={styles.bottomNavLine }/>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
+  bottomNavLine: {
+    width: '1000%',
+    height: 1,
+    backgroundColor: '#fff',
+    position: 'relative',
+    bottom: 90,
+  },
   tabContainer: {
     flexDirection: 'row',
-    height: 70,
+    height: 110,
     backgroundColor: '#1E1E1E',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
+    paddingBottom: 10,
   },
   tabSection: {
     flexDirection: 'row',
@@ -84,13 +93,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   addButton: {
-    backgroundColor: '#cc0909',
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    backgroundColor: '#c21f31',
+    width: 74,
+    height: 74,
+    borderRadius: 37, // Change from 30 to 37 (half of width/height)
     alignItems: 'center',
     justifyContent: 'center',
-    bottom: 20, // Makes button rise above other tabs
+    bottom: 20, 
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
