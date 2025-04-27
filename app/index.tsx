@@ -54,6 +54,10 @@ export default function LoginScreen() {
           style={styles.logo}
         />
 
+        <View style={styles.emailInput}>
+          <Text style={{fontFamily: 'Bevan-Regular'}}>Welcome to Lift Watcher</Text>
+        </View>
+
         <TouchableOpacity
           style={styles.googleButton}
           disabled={!request}
@@ -73,7 +77,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#cc0909',
+    backgroundColor: '#C21F31',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16,
@@ -84,6 +88,13 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     resizeMode: 'contain',
   },
+  emailInput: {
+    width: '100%',
+    marginTop: 16,
+    marginBottom: 50,
+    font: 'Bevan'
+  },
+
   googleButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -91,7 +102,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 4,
+    marginTop: 100
   },
-  googleIcon: { width: 24, height: 24, marginRight: 8 },
+  
+  googleIcon: { width: 24, height: 24, marginRight: 8},
   buttonText: { fontSize: 16, color: '#000', fontWeight: '600' },
 });
