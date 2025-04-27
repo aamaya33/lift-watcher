@@ -71,11 +71,11 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#fff',
     position: 'relative',
-    bottom: 90,
+    bottom: 100,
   },
   tabContainer: {
     flexDirection: 'row',
-    height: 110,
+    height: 120,
     backgroundColor: '#1E1E1E',
     alignItems: 'center',
     justifyContent: 'space-between',
