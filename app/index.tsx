@@ -54,11 +54,11 @@ export default function LoginScreen() {
 
 
   // Handle the response from the auth session, if successful, navigate to the home screen
-  useEffect(() => {
-    if (response?.type === 'success') {
-      router.replace('/frontend/(tabs)/Home');
-    }
-  }, [response]);
+  // useEffect(() => {
+  //   if (response?.type === 'success') {
+  //     router.replace('/frontend/(tabs)/Home');
+  //   }
+  // }, [response]);
 
   return (
     <>
@@ -98,9 +98,12 @@ export default function LoginScreen() {
       </TouchableOpacity>
       </View>
 
-      <View style={styles.LoginButton}>
+      <TouchableOpacity 
+        style={styles.LoginButton}
+        onPress={() => router.replace('/frontend/(tabs)/Home')}
+      >
         <Text style={{fontFamily: 'Bevan-Regular', color: '#fff', fontSize: '18'}}>LOGIN</Text>
-      </View>
+      </TouchableOpacity>
 
       <View style={styles.SignUp}>
         <Text style={{fontFamily: 'Bevan-Regular', color: '#000', fontSize: '14'}}>Don't have an account?</Text>
@@ -140,7 +143,7 @@ const styles = StyleSheet.create({
   },
   EmailInput: {
     position: 'relative',
-    bottom: 120,
+    bottom: 85,
     width: 275,
     height: 50,
     fontFamily: 'Bevan-Regular',
@@ -159,7 +162,7 @@ const styles = StyleSheet.create({
   },
   passwordContainer: {
     position: 'relative',
-    bottom: 100,
+    bottom: 65,
     width: 275,
     flexDirection: 'row',
     alignItems: 'center',
@@ -186,7 +189,7 @@ const styles = StyleSheet.create({
   },
   LoginButton: {
     position: 'relative',
-    bottom: 25,
+    bottom: -5,
     width: 275,
     height: 50,
     backgroundColor: '#000',  // box background
@@ -207,13 +210,13 @@ const styles = StyleSheet.create({
 
   SignUp: {
     position: 'relative', 
-    bottom: -80,
+    bottom: -55,
     flexDirection: 'row'
   },
 
   googleButton: {
     position: 'relative',
-    bottom: -150,
+    bottom: -100,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
