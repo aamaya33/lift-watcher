@@ -1,5 +1,5 @@
 // app/index.tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,17 +7,27 @@ import {
   TouchableOpacity,
   StyleSheet,
   Platform,
+  TextInput
 } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import { makeRedirectUri } from 'expo-auth-session';
 import { useRouter, Stack } from 'expo-router';
+import { useFonts } from 'expo-font';
+import { Feather } from '@expo/vector-icons';
+
 
 // Allow the native webview to complete the auth session
 WebBrowser.maybeCompleteAuthSession();
 
 export default function LoginScreen() {
   const router = useRouter();
+
+  const [fontsLoaded] = useFonts({
+    'Bevan-Regular': require('../assets/fonts/Bevan-Regular.ttf'),
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   // Use the redirect URI for the platform
   const redirectUri =
@@ -37,10 +47,16 @@ export default function LoginScreen() {
     redirectUri,
   });
 
+  // Load the fonts
+  if (!fontsLoaded) {
+    return <View><Text>Loading...</Text></View>;
+  }
+
+
   // Handle the response from the auth session, if successful, navigate to the home screen
   useEffect(() => {
     if (response?.type === 'success') {
-      router.replace('/(tabs)/Home');
+      router.replace('/frontend/(tabs)/Home');
     }
   }, [response]);
 
@@ -54,22 +70,55 @@ export default function LoginScreen() {
           style={styles.logo}
         />
 
-        <View style={styles.emailInput}>
-          <Text style={{fontFamily: 'Bevan-Regular'}}>Welcome to Lift Watcher</Text>
-        </View>
+      <TextInput
+        style={styles.EmailInput}
+        placeholder="Email:"
+        placeholderTextColor="#888888"
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
 
-        <TouchableOpacity
-          style={styles.googleButton}
-          disabled={!request}
-          onPress={() => promptAsync()}
+    <View style={styles.passwordContainer}>
+      <TextInput
+        style={styles.passwordField}
+        placeholder="Password:"
+        placeholderTextColor="#888888"
+        secureTextEntry={!showPassword}
+        autoCapitalize="none"
+      />
+      <TouchableOpacity 
+          style={styles.eyeIcon} 
+          onPress={() => setShowPassword(!showPassword)}
         >
-          <Image
-            source={require('../assets/fonts/images/google-logo.png')}
-            style={styles.googleIcon}
+          <Feather 
+            name={showPassword ? "eye" : "eye-off"} 
+            size={24} 
+            color="#888888" 
           />
-          <Text style={styles.buttonText}>Sign in with Google</Text>
-        </TouchableOpacity>
+      </TouchableOpacity>
       </View>
+
+      <View style={styles.LoginButton}>
+        <Text style={{fontFamily: 'Bevan-Regular', color: '#fff', fontSize: '18'}}>LOGIN</Text>
+      </View>
+
+      <View style={styles.SignUp}>
+        <Text style={{fontFamily: 'Bevan-Regular', color: '#000', fontSize: '14'}}>Don't have an account?</Text>
+        <Text style={{fontFamily: 'Bevan-Regular', color: '#FFBF00', fontSize: '14'}}> Register!</Text>
+      </View>
+
+      <TouchableOpacity
+        style={styles.googleButton}
+        disabled={!request}
+        onPress={() => promptAsync()}
+      >
+        <Image
+          source={require('../assets/fonts/images/google-logo.png')}
+          style={styles.googleIcon}
+        />
+        <Text style={styles.buttonText}>Sign in with Google</Text>
+      </TouchableOpacity>
+    </View>
     </>
   );
 }
@@ -83,26 +132,94 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   logo: {
+    position : 'relative',
     width: 220,
-    height: 220,
-    marginBottom: 32,
+    height: 200,
+    bottom: 155,
     resizeMode: 'contain',
   },
-  emailInput: {
+  EmailInput: {
+    position: 'relative',
+    bottom: 120,
+    width: 275,
+    height: 50,
+    fontFamily: 'Bevan-Regular',
+    backgroundColor: '#fff',  // box background
+    borderColor: '#333',      // optional border
+    borderWidth: 1,           // optional border width
+    borderRadius: 16,         // <-- magic for rounded corners
+    padding: 7,             // so the text isn’t squished
+    // optional: shadow on iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    // optional: elevation for Android shadow
+    elevation: 3,
+  },
+  passwordContainer: {
+    position: 'relative',
+    bottom: 100,
+    width: 275,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordField: {
     width: '100%',
-    marginTop: 16,
-    marginBottom: 50,
-    font: 'Bevan'
+    height: 50,
+    fontFamily: 'Bevan-Regular',
+    backgroundColor: '#fff',
+    borderColor: '#333',
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 7,
+    paddingRight: 40, // Make room for the icon
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: 12,
+  },
+  LoginButton: {
+    position: 'relative',
+    bottom: 25,
+    width: 275,
+    height: 50,
+    backgroundColor: '#000',  // box background
+    borderColor: '#333',      // optional border
+    borderWidth: 1,           // optional border width
+    borderRadius: 16,         // <-- magic for rounded corners
+    padding: 7,             // so the text isn’t squished
+    // optional: shadow on iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    // optional: elevation for Android shadow
+    elevation: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  SignUp: {
+    position: 'relative', 
+    bottom: -80,
+    flexDirection: 'row'
   },
 
   googleButton: {
+    position: 'relative',
+    bottom: -150,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderRadius: 4,
-    marginTop: 100
+    borderRadius: 4
   },
   
   googleIcon: { width: 24, height: 24, marginRight: 8},

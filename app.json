@@ -42,7 +42,12 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/Bevan-Regular.ttf"]
+          "fonts": [
+            {
+              "asset": "./assets/fonts/Bevan-Regular.ttf",
+              "family": "Bevan-Regular"
+            }
+          ]
         }
       ]
 
