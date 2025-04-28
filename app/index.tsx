@@ -1,5 +1,5 @@
 // app/index.tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,17 +7,27 @@ import {
   TouchableOpacity,
   StyleSheet,
   Platform,
+  TextInput
 } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import { makeRedirectUri } from 'expo-auth-session';
 import { useRouter, Stack } from 'expo-router';
+import { useFonts } from 'expo-font';
+import { Feather } from '@expo/vector-icons';
+
 
 // Allow the native webview to complete the auth session
 WebBrowser.maybeCompleteAuthSession();
 
 export default function LoginScreen() {
   const router = useRouter();
+
+  const [fontsLoaded] = useFonts({
+    'Bevan-Regular': require('../assets/fonts/Bevan-Regular.ttf'),
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   // Use the redirect URI for the platform
   const redirectUri =
@@ -37,12 +47,18 @@ export default function LoginScreen() {
     redirectUri,
   });
 
+  // Load the fonts
+  if (!fontsLoaded) {
+    return <View><Text>Loading...</Text></View>;
+  }
+
+
   // Handle the response from the auth session, if successful, navigate to the home screen
-  useEffect(() => {
-    if (response?.type === 'success') {
-      router.replace('/(tabs)/Home');
-    }
-  }, [response]);
+  // useEffect(() => {
+  //   if (response?.type === 'success') {
+  //     router.replace('/frontend/(tabs)/Home');
+  //   }
+  // }, [response]);
 
   return (
     <>
@@ -54,18 +70,58 @@ export default function LoginScreen() {
           style={styles.logo}
         />
 
-        <TouchableOpacity
-          style={styles.googleButton}
-          disabled={!request}
-          onPress={() => promptAsync()}
+      <TextInput
+        style={styles.EmailInput}
+        placeholder="Email:"
+        placeholderTextColor="#888888"
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+
+    <View style={styles.passwordContainer}>
+      <TextInput
+        style={styles.passwordField}
+        placeholder="Password:"
+        placeholderTextColor="#888888"
+        secureTextEntry={!showPassword}
+        autoCapitalize="none"
+      />
+      <TouchableOpacity 
+          style={styles.eyeIcon} 
+          onPress={() => setShowPassword(!showPassword)}
         >
-          <Image
-            source={require('../assets/fonts/images/google-logo.png')}
-            style={styles.googleIcon}
+          <Feather 
+            name={showPassword ? "eye" : "eye-off"} 
+            size={24} 
+            color="#888888" 
           />
-          <Text style={styles.buttonText}>Sign in with Google</Text>
-        </TouchableOpacity>
+      </TouchableOpacity>
       </View>
+
+      <TouchableOpacity 
+        style={styles.LoginButton}
+        onPress={() => router.replace('/frontend/(tabs)/Home')}
+      >
+        <Text style={{fontFamily: 'Bevan-Regular', color: '#fff', fontSize: '18'}}>LOGIN</Text>
+      </TouchableOpacity>
+
+      <View style={styles.SignUp}>
+        <Text style={{fontFamily: 'Bevan-Regular', color: '#000', fontSize: '14'}}>Don't have an account?</Text>
+        <Text style={{fontFamily: 'Bevan-Regular', color: '#FFBF00', fontSize: '14'}}> Register!</Text>
+      </View>
+
+      <TouchableOpacity
+        style={styles.googleButton}
+        disabled={!request}
+        onPress={() => promptAsync()}
+      >
+        <Image
+          source={require('../assets/fonts/images/google-logo.png')}
+          style={styles.googleIcon}
+        />
+        <Text style={styles.buttonText}>Sign in with Google</Text>
+      </TouchableOpacity>
+    </View>
     </>
   );
 }
@@ -73,25 +129,102 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#cc0909',
+    backgroundColor: '#C21F31',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16,
   },
   logo: {
+    position : 'relative',
     width: 220,
-    height: 220,
-    marginBottom: 32,
+    height: 200,
+    bottom: 155,
     resizeMode: 'contain',
   },
+  EmailInput: {
+    position: 'relative',
+    bottom: 85,
+    width: 275,
+    height: 50,
+    fontFamily: 'Bevan-Regular',
+    backgroundColor: '#fff',  // box background
+    borderColor: '#333',      // optional border
+    borderWidth: 1,           // optional border width
+    borderRadius: 16,         // <-- magic for rounded corners
+    padding: 7,             // so the text isn’t squished
+    // optional: shadow on iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    // optional: elevation for Android shadow
+    elevation: 3,
+  },
+  passwordContainer: {
+    position: 'relative',
+    bottom: 65,
+    width: 275,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordField: {
+    width: '100%',
+    height: 50,
+    fontFamily: 'Bevan-Regular',
+    backgroundColor: '#fff',
+    borderColor: '#333',
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 7,
+    paddingRight: 40, // Make room for the icon
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: 12,
+  },
+  LoginButton: {
+    position: 'relative',
+    bottom: -5,
+    width: 275,
+    height: 50,
+    backgroundColor: '#000',  // box background
+    borderColor: '#333',      // optional border
+    borderWidth: 1,           // optional border width
+    borderRadius: 16,         // <-- magic for rounded corners
+    padding: 7,             // so the text isn’t squished
+    // optional: shadow on iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    // optional: elevation for Android shadow
+    elevation: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  SignUp: {
+    position: 'relative', 
+    bottom: -55,
+    flexDirection: 'row'
+  },
+
   googleButton: {
+    position: 'relative',
+    bottom: -100,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderRadius: 4,
+    borderRadius: 4
   },
-  googleIcon: { width: 24, height: 24, marginRight: 8 },
+  
+  googleIcon: { width: 24, height: 24, marginRight: 8},
   buttonText: { fontSize: 16, color: '#000', fontWeight: '600' },
 });

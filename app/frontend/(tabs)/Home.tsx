@@ -120,7 +120,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
+    backgroundColor: '#1E1E1E',
   },
   header: {
     fontSize: 24,
@@ -134,10 +134,16 @@ const styles = StyleSheet.create({
   },
   card: {
     flexDirection: 'row',
-    backgroundColor: '#333',
+    backgroundColor: '#2E2E2E',
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    // optional: elevation for Android shadow
+    elevation: 3,
   },
   cardLeft: {
     marginRight: 12,
