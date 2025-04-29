@@ -25,6 +25,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      
       "expo-router",
       [
         "expo-splash-screen",
@@ -34,8 +35,22 @@
           "resizeMode": "contain",
           "backgroundColor": "#C21F31"
         }
+        
       ],
-      "expo-sqlite"
+      "expo-sqlite",
+
+      [
+        "expo-font",
+        {
+          "fonts": [
+            {
+              "asset": "./assets/fonts/Bevan-Regular.ttf",
+              "family": "Bevan-Regular"
+            }
+          ]
+        }
+      ]
+
     ],
     "experiments": {
       "typedRoutes": true
