@@ -17,8 +17,40 @@ import { useFonts } from 'expo-font';
 import { Feather } from '@expo/vector-icons';
 
 
+
 // Allow the native webview to complete the auth session
 WebBrowser.maybeCompleteAuthSession();
+const handleregister = async (email: string, password: string, username: string) => {
+  if(!email || !password || !username) {
+    console.log('Please fill in all fields');
+    return;
+  }
+  
+  try {
+    const response = await fetch('http://localhost:3000/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        username
+      })
+  });
+
+  const json = await response.json();
+  if (response.ok) {
+    console.log('User registered successfully:', json);
+
+  }
+
+
+
+} catch(error) {
+    console.error('re:', error);
+  }
+}
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -102,7 +134,8 @@ export default function LoginScreen() {
         style={styles.LoginButton}
         onPress={() => router.replace('/frontend/(tabs)/Home')}
       >
-        <Text style={{fontFamily: 'Bevan-Regular', color: '#fff', fontSize: '18'}}>LOGIN</Text>
+        {/* need to change this */}
+        <Text style={{fontFamily: 'Bevan-Regular', color: '#fff', fontSize: '18'}}>REGISTER</Text> 
       </TouchableOpacity>
 
       <View style={styles.SignUp}>
