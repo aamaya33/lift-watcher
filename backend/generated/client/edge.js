@@ -142,7 +142,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/aamaya3/Desktop/aamaya3/lift-watcher/app/backend/generated/client",
+      "value": "/Users/aamaya3/Desktop/aamaya3/lift-watcher/backend/generated/client",
       "fromEnvVar": null
     },
     "config": {
@@ -156,12 +156,12 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/aamaya3/Desktop/aamaya3/lift-watcher/app/backend/prisma/schema.prisma",
+    "sourceFilePath": "/Users/aamaya3/Desktop/aamaya3/lift-watcher/backend/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../../.env"
+    "rootEnvPath": "../../../.env",
+    "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../prisma",
   "clientVersion": "6.6.0",
@@ -170,11 +170,12 @@ const config = {
     "db"
   ],
   "activeProvider": "sqlite",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "file:./dev.db"
+        "value": null
       }
     }
   },
