@@ -12,7 +12,7 @@
     "lint": "expo lint",
     "prisma:generate": "npx prisma generate --schema=./backend/prisma/schema.prisma",
     "prisma:migrate": "npx prisma migrate dev --schema=./backend/prisma/schema.prisma",
-    "start:backend": "ts-node app/backend/server.ts"
+    "start:backend": "ts-node ./backend/server.ts"
   },
   "jest": {
     "preset": "jest-expo"

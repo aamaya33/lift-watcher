@@ -17,9 +17,10 @@ const registerHandler: RequestHandler = async (req, res) => {
               success: false, 
               message: 'Email and password are required' 
             });
+            console.log("no email and password")
             return;
           }
-
+        console.log("registering user", email, password);
         // check if the user exists
         const existingUser = await prisma.user.findUnique({
             where: { email },
@@ -30,6 +31,7 @@ const registerHandler: RequestHandler = async (req, res) => {
               success: false, 
               message: 'Email already exists' 
             });
+            console.log("user already exists")
             return;
         }
 
@@ -65,7 +67,7 @@ const registerHandler: RequestHandler = async (req, res) => {
             },
             token: userToken
           });
-        
+        console.log("User registered successfully:", newUser);
 
     } catch(error) {
         console.error('Error registering user:', error);
