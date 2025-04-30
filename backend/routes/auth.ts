@@ -12,7 +12,7 @@ const registerHandler: RequestHandler = async (req, res) => {
 
     try {
         const { email, password, username } = req.body; 
-        if (!email || !password) {
+        if (!email || !password || !username) {
             res.status(400).json({ 
               success: false, 
               message: 'Email and password are required' 
@@ -78,5 +78,68 @@ const registerHandler: RequestHandler = async (req, res) => {
     }
 };
 
+const loginHandler: RequestHandler = async(req,res) => {
+    try {
+      const {email, password} = req.body; 
+      console.log("Logging user in");
+
+      if (!email || !password) {
+        res.status(400).json({ 
+          success: false, 
+          message: 'Email and password are required' 
+        });
+        return;
+      }
+
+      // check to see if the user exists 
+      const user = await prisma.user.findUnique({
+        where: { email}
+      })
+
+      if (!user) {
+        res.status(400).json({ 
+          success: false, 
+          message: 'Email does not exist' 
+        });
+        return;
+      }
+      // check password
+      const isPWValid = await bcrypt.compare(password, user.password);
+
+      if (!isPWValid) {
+        res.status(400).json({ 
+          success: false, 
+          message: 'Invalid password' 
+        });
+        return;
+      }
+
+      const tokenPayload = {
+        id: user.id,
+        email: user.email,
+        createdAt: new Date().toISOString()
+      };
+
+      const userToken = jwt.sign(tokenPayload, JWT_SECRET, {expiresIn: '24h'});
+
+      res.status(200).json({
+        success: true,
+        user: {
+          id: user.id,
+          email: user.email,
+          username: user.username
+        },
+        token: userToken
+      });
+    } catch(error) {
+      console.error('Error logging in user:', error);
+      res.status(500).json({ 
+        success: false, 
+        message: 'Internal server error' 
+      });
+    }   
+};
+
 router.post('/register', registerHandler);
+router.post('/login', loginHandler);
 export default router; 

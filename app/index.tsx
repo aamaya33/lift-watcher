@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   Platform,
-  TextInput
+  TextInput,
+  Alert
 } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
@@ -19,30 +20,36 @@ import { Feather } from '@expo/vector-icons';
 // Allow the native webview to complete the auth session
 WebBrowser.maybeCompleteAuthSession();
 
-const handleregister = async (email: string, password: string, username: string, router) => {
+const handlelogin = async (email: string, password: string, router) => {
   
-  if(!email || !password || !username) {
+  if(!email || !password) {
     console.log('Please fill in all fields');
+    Alert.alert('Please fill in all fields');
     return;
   }
   
   try {
-    const response = await fetch('http://10.239.152.110:3000/api/register', {
+    const response = await fetch('http://10.239.152.110:3000/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         email,
-        password,
-        username
+        password
       })
   });
 
   const json = await response.json();
   if (response.ok) {
-    console.log('User registered successfully:', json);
+    console.log('User logged in successfully:', json);
     router.replace('/frontend/(tabs)/Home');
+  }
+  else if (response.status == 400){
+    Alert.alert(
+      "Login Failed", 
+      "Email or password is incorrect"
+    );
   }
 
 } catch(error) {
@@ -60,7 +67,6 @@ export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
 
   // Use the redirect URI for the platform
   const redirectUri =
@@ -141,7 +147,7 @@ export default function LoginScreen() {
       > */}
       <TouchableOpacity 
         style={styles.LoginButton}
-        onPress={() => handleregister(email, password, email, router)}
+        onPress={() => handlelogin(email, password, router)}
       >
         {/* need to change this */}
         <Text style={{fontFamily: 'Bevan-Regular', color: '#fff', fontSize: '18'}}>LOGIN</Text> 

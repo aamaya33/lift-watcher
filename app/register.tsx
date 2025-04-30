@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  Platform,
+  Alert,
   TextInput
 } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
@@ -42,6 +42,12 @@ const handleregister = async (email: string, password: string, username: string,
   if (response.ok) {
     console.log('User registered successfully:', json);
     router.replace('/frontend/(tabs)/Home');
+  }
+  else if (response.status === 400) {
+    Alert.alert(
+      "Registration Failed", 
+      "Email already exists, try logging in with it"
+    );
   }
 
 } catch(error) {
