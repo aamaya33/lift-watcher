@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     position : 'relative',
     width: 220,
     height: 200,
-    bottom: 155,
+    bottom: 125,
     resizeMode: 'contain',
   },
   EmailInput: {

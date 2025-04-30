@@ -2,11 +2,13 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useRouter, Stack } from 'expo-router';
 
 export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   // Split tabs into left and right sections
   const leftTabs = state.routes.slice(0, 2); // First 2 tabs
   const rightTabs = state.routes.slice(2);   // Remaining tabs
+  const router = useRouter();
   
   return (
     <View style={styles.tabContainer}>
@@ -21,7 +23,7 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => {
-          navigation.navigate('addWorkout');
+          router.replace('/');
         }}
       >
         <Ionicons name="add" color="#fff" size={72} />
