@@ -22,6 +22,7 @@ const handleregister = async (email: string, password: string, username: string,
   
   if(!email || !password || !username) {
     console.log('Please fill in all fields');
+    Alert.alert("Please fill in all fields")
     return;
   }
   
