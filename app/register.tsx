@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   },
   passwordContainer: {
     position: 'relative',
-    bottom: 60,
+    bottom: 65,
     width: 275,
     flexDirection: 'column',
     alignItems: 'center',
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
   },
   confirmPasswordContainer: {
     position: 'relative',
-    bottom: 50,
+    bottom: 70,
     width: 275,
     flexDirection: 'column',
     alignItems: 'center',
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
   },
   RegisterButton: {
     position: 'relative',
-    bottom: -10,
+    bottom: 20,
     width: 275,
     height: 50,
     backgroundColor: '#FFBF00',  // box background
