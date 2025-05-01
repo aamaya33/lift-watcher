@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -9,12 +9,13 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-
+  Alert
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import * as ImagePicker from 'expo-image-picker';
+import { Video, ResizeMode } from 'expo-av';
 
 
 export default function addLift() {
@@ -30,8 +31,11 @@ export default function addLift() {
     const [workoutId, setWorkoutId] = useState('');
 
 
-    const [onPlayVideo, setOnPlayVideo] = useState(false);
-    const [videoThumbnailUri, setVideoThumbnailUri] = useState('https://example.com/video-thumbnail.jpg'); // Replace with actual thumbnail URI
+    // Video state
+    const [videoUri, setVideoUri] = useState('');
+    const [videoThumbnailUri, setVideoThumbnailUri] = useState('');
+    const [isPlaying, setIsPlaying] = useState(false);
+    const videoRef = useRef<Video>(null);
 
     const router = useRouter();
     const getUserId = async () => {
@@ -45,6 +49,25 @@ export default function addLift() {
       }
     };
     getUserId();
+
+    const pickVideo = async () => {
+      const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (permissionResult.granted === false) {
+        Alert.alert('Permission to access camera is required!');
+        return;
+      }
+
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: 'videos',
+        allowsEditing: true,
+        quality: 1,
+      });
+
+      if (!result.canceled && result.assets && result.assets[0]){
+        setVideoUri(result.assets[0].uri);
+        setVideoThumbnailUri(result.assets[0].uri); 
+      };
+    };
 
     const handleExerciseSubmit = async () => {
       try {
@@ -92,7 +115,43 @@ export default function addLift() {
           <View style={styles.topSection}>
             {/* Video preview - left side */}
             <View style={styles.videoContainer}>
-              <TouchableOpacity activeOpacity={0.8}>
+            {videoUri ? (
+              <TouchableOpacity 
+                activeOpacity={0.8} 
+                onPress={() => {
+                  if (videoRef.current) {
+                    setIsPlaying(!isPlaying);
+                    isPlaying ? videoRef.current.pauseAsync() : videoRef.current.playAsync();
+                  }
+                }}
+              >
+            <Video
+              ref={videoRef}
+              source={{ uri: videoUri }}
+              style={styles.videoThumbnail}
+              resizeMode={ResizeMode.COVER}
+              useNativeControls={isPlaying}
+            />
+            {!isPlaying && (
+              <View style={styles.playButton}>
+                <Ionicons name="play" size={24} color="#fff" />
+              </View>
+            )}
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity 
+            style={[styles.videoThumbnail, styles.uploadContainer]} 
+            activeOpacity={0.8}
+            onPress={pickVideo}
+          >
+            <Ionicons name="cloud-upload-outline" size={40} color="#fff" />
+            <Text style={{color: '#fff', fontSize: 16, fontFamily: 'Bevan', marginTop: 8}}>
+              Upload Video
+            </Text>
+          </TouchableOpacity>
+        )}
+
+              {/* <TouchableOpacity activeOpacity={0.8}>
                 <Image
                   source={{ uri: videoThumbnailUri }}
                   style={styles.videoThumbnail}
@@ -100,7 +159,7 @@ export default function addLift() {
                 <View style={styles.playButton}>
                   <Ionicons name="play" size={24} color="#fff" />
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
 
             {/* Right side stacked inputs */}
@@ -462,5 +521,13 @@ addButton: {
     elevation: 3,
     alignSelf: 'center',
     alignItems: 'center',
-}
+},
+  uploadContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#2E2E2E',
+    borderWidth: 2,
+    borderColor: '#444',
+    borderStyle: 'dashed',
+  },
 });
