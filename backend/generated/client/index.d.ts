@@ -3407,7 +3407,8 @@ export namespace Prisma {
 
   export type ExerciseMinAggregateOutputType = {
     id: number | null
-    name: string | null
+    liftType: string | null
+    variation: string | null
     sets: number | null
     reps: number | null
     weight: number | null
@@ -3417,7 +3418,8 @@ export namespace Prisma {
 
   export type ExerciseMaxAggregateOutputType = {
     id: number | null
-    name: string | null
+    liftType: string | null
+    variation: string | null
     sets: number | null
     reps: number | null
     weight: number | null
@@ -3427,7 +3429,8 @@ export namespace Prisma {
 
   export type ExerciseCountAggregateOutputType = {
     id: number
-    name: number
+    liftType: number
+    variation: number
     sets: number
     reps: number
     weight: number
@@ -3455,7 +3458,8 @@ export namespace Prisma {
 
   export type ExerciseMinAggregateInputType = {
     id?: true
-    name?: true
+    liftType?: true
+    variation?: true
     sets?: true
     reps?: true
     weight?: true
@@ -3465,7 +3469,8 @@ export namespace Prisma {
 
   export type ExerciseMaxAggregateInputType = {
     id?: true
-    name?: true
+    liftType?: true
+    variation?: true
     sets?: true
     reps?: true
     weight?: true
@@ -3475,7 +3480,8 @@ export namespace Prisma {
 
   export type ExerciseCountAggregateInputType = {
     id?: true
-    name?: true
+    liftType?: true
+    variation?: true
     sets?: true
     reps?: true
     weight?: true
@@ -3572,12 +3578,13 @@ export namespace Prisma {
 
   export type ExerciseGroupByOutputType = {
     id: number
-    name: string
+    liftType: string
+    variation: string
     sets: number
     reps: number
     weight: number
     notes: string | null
-    workoutId: number
+    workoutId: number | null
     _count: ExerciseCountAggregateOutputType | null
     _avg: ExerciseAvgAggregateOutputType | null
     _sum: ExerciseSumAggregateOutputType | null
@@ -3601,40 +3608,44 @@ export namespace Prisma {
 
   export type ExerciseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    name?: boolean
+    liftType?: boolean
+    variation?: boolean
     sets?: boolean
     reps?: boolean
     weight?: boolean
     notes?: boolean
     workoutId?: boolean
-    workout?: boolean | WorkoutDefaultArgs<ExtArgs>
+    workout?: boolean | Exercise$workoutArgs<ExtArgs>
   }, ExtArgs["result"]["exercise"]>
 
   export type ExerciseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    name?: boolean
+    liftType?: boolean
+    variation?: boolean
     sets?: boolean
     reps?: boolean
     weight?: boolean
     notes?: boolean
     workoutId?: boolean
-    workout?: boolean | WorkoutDefaultArgs<ExtArgs>
+    workout?: boolean | Exercise$workoutArgs<ExtArgs>
   }, ExtArgs["result"]["exercise"]>
 
   export type ExerciseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    name?: boolean
+    liftType?: boolean
+    variation?: boolean
     sets?: boolean
     reps?: boolean
     weight?: boolean
     notes?: boolean
     workoutId?: boolean
-    workout?: boolean | WorkoutDefaultArgs<ExtArgs>
+    workout?: boolean | Exercise$workoutArgs<ExtArgs>
   }, ExtArgs["result"]["exercise"]>
 
   export type ExerciseSelectScalar = {
     id?: boolean
-    name?: boolean
+    liftType?: boolean
+    variation?: boolean
     sets?: boolean
     reps?: boolean
     weight?: boolean
@@ -3642,30 +3653,31 @@ export namespace Prisma {
     workoutId?: boolean
   }
 
-  export type ExerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "sets" | "reps" | "weight" | "notes" | "workoutId", ExtArgs["result"]["exercise"]>
+  export type ExerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "liftType" | "variation" | "sets" | "reps" | "weight" | "notes" | "workoutId", ExtArgs["result"]["exercise"]>
   export type ExerciseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    workout?: boolean | WorkoutDefaultArgs<ExtArgs>
+    workout?: boolean | Exercise$workoutArgs<ExtArgs>
   }
   export type ExerciseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    workout?: boolean | WorkoutDefaultArgs<ExtArgs>
+    workout?: boolean | Exercise$workoutArgs<ExtArgs>
   }
   export type ExerciseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    workout?: boolean | WorkoutDefaultArgs<ExtArgs>
+    workout?: boolean | Exercise$workoutArgs<ExtArgs>
   }
 
   export type $ExercisePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Exercise"
     objects: {
-      workout: Prisma.$WorkoutPayload<ExtArgs>
+      workout: Prisma.$WorkoutPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      name: string
+      liftType: string
+      variation: string
       sets: number
       reps: number
       weight: number
       notes: string | null
-      workoutId: number
+      workoutId: number | null
     }, ExtArgs["result"]["exercise"]>
     composites: {}
   }
@@ -4060,7 +4072,7 @@ export namespace Prisma {
    */
   export interface Prisma__ExerciseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    workout<T extends WorkoutDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkoutDefaultArgs<ExtArgs>>): Prisma__WorkoutClient<$Result.GetResult<Prisma.$WorkoutPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    workout<T extends Exercise$workoutArgs<ExtArgs> = {}>(args?: Subset<T, Exercise$workoutArgs<ExtArgs>>): Prisma__WorkoutClient<$Result.GetResult<Prisma.$WorkoutPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4091,7 +4103,8 @@ export namespace Prisma {
    */
   interface ExerciseFieldRefs {
     readonly id: FieldRef<"Exercise", 'Int'>
-    readonly name: FieldRef<"Exercise", 'String'>
+    readonly liftType: FieldRef<"Exercise", 'String'>
+    readonly variation: FieldRef<"Exercise", 'String'>
     readonly sets: FieldRef<"Exercise", 'Int'>
     readonly reps: FieldRef<"Exercise", 'Int'>
     readonly weight: FieldRef<"Exercise", 'Float'>
@@ -4491,6 +4504,25 @@ export namespace Prisma {
   }
 
   /**
+   * Exercise.workout
+   */
+  export type Exercise$workoutArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Workout
+     */
+    select?: WorkoutSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Workout
+     */
+    omit?: WorkoutOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkoutInclude<ExtArgs> | null
+    where?: WorkoutWhereInput
+  }
+
+  /**
    * Exercise without action
    */
   export type ExerciseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4547,7 +4579,8 @@ export namespace Prisma {
 
   export const ExerciseScalarFieldEnum: {
     id: 'id',
-    name: 'name',
+    liftType: 'liftType',
+    variation: 'variation',
     sets: 'sets',
     reps: 'reps',
     weight: 'weight',
@@ -4747,23 +4780,25 @@ export namespace Prisma {
     OR?: ExerciseWhereInput[]
     NOT?: ExerciseWhereInput | ExerciseWhereInput[]
     id?: IntFilter<"Exercise"> | number
-    name?: StringFilter<"Exercise"> | string
+    liftType?: StringFilter<"Exercise"> | string
+    variation?: StringFilter<"Exercise"> | string
     sets?: IntFilter<"Exercise"> | number
     reps?: IntFilter<"Exercise"> | number
     weight?: FloatFilter<"Exercise"> | number
     notes?: StringNullableFilter<"Exercise"> | string | null
-    workoutId?: IntFilter<"Exercise"> | number
-    workout?: XOR<WorkoutScalarRelationFilter, WorkoutWhereInput>
+    workoutId?: IntNullableFilter<"Exercise"> | number | null
+    workout?: XOR<WorkoutNullableScalarRelationFilter, WorkoutWhereInput> | null
   }
 
   export type ExerciseOrderByWithRelationInput = {
     id?: SortOrder
-    name?: SortOrder
+    liftType?: SortOrder
+    variation?: SortOrder
     sets?: SortOrder
     reps?: SortOrder
     weight?: SortOrder
     notes?: SortOrderInput | SortOrder
-    workoutId?: SortOrder
+    workoutId?: SortOrderInput | SortOrder
     workout?: WorkoutOrderByWithRelationInput
   }
 
@@ -4772,23 +4807,25 @@ export namespace Prisma {
     AND?: ExerciseWhereInput | ExerciseWhereInput[]
     OR?: ExerciseWhereInput[]
     NOT?: ExerciseWhereInput | ExerciseWhereInput[]
-    name?: StringFilter<"Exercise"> | string
+    liftType?: StringFilter<"Exercise"> | string
+    variation?: StringFilter<"Exercise"> | string
     sets?: IntFilter<"Exercise"> | number
     reps?: IntFilter<"Exercise"> | number
     weight?: FloatFilter<"Exercise"> | number
     notes?: StringNullableFilter<"Exercise"> | string | null
-    workoutId?: IntFilter<"Exercise"> | number
-    workout?: XOR<WorkoutScalarRelationFilter, WorkoutWhereInput>
+    workoutId?: IntNullableFilter<"Exercise"> | number | null
+    workout?: XOR<WorkoutNullableScalarRelationFilter, WorkoutWhereInput> | null
   }, "id">
 
   export type ExerciseOrderByWithAggregationInput = {
     id?: SortOrder
-    name?: SortOrder
+    liftType?: SortOrder
+    variation?: SortOrder
     sets?: SortOrder
     reps?: SortOrder
     weight?: SortOrder
     notes?: SortOrderInput | SortOrder
-    workoutId?: SortOrder
+    workoutId?: SortOrderInput | SortOrder
     _count?: ExerciseCountOrderByAggregateInput
     _avg?: ExerciseAvgOrderByAggregateInput
     _max?: ExerciseMaxOrderByAggregateInput
@@ -4801,12 +4838,13 @@ export namespace Prisma {
     OR?: ExerciseScalarWhereWithAggregatesInput[]
     NOT?: ExerciseScalarWhereWithAggregatesInput | ExerciseScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Exercise"> | number
-    name?: StringWithAggregatesFilter<"Exercise"> | string
+    liftType?: StringWithAggregatesFilter<"Exercise"> | string
+    variation?: StringWithAggregatesFilter<"Exercise"> | string
     sets?: IntWithAggregatesFilter<"Exercise"> | number
     reps?: IntWithAggregatesFilter<"Exercise"> | number
     weight?: FloatWithAggregatesFilter<"Exercise"> | number
     notes?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
-    workoutId?: IntWithAggregatesFilter<"Exercise"> | number
+    workoutId?: IntNullableWithAggregatesFilter<"Exercise"> | number | null
   }
 
   export type UserCreateInput = {
@@ -4944,55 +4982,61 @@ export namespace Prisma {
   }
 
   export type ExerciseCreateInput = {
-    name: string
+    liftType: string
+    variation: string
     sets: number
     reps: number
     weight: number
     notes?: string | null
-    workout: WorkoutCreateNestedOneWithoutExercisesInput
+    workout?: WorkoutCreateNestedOneWithoutExercisesInput
   }
 
   export type ExerciseUncheckedCreateInput = {
     id?: number
-    name: string
+    liftType: string
+    variation: string
     sets: number
     reps: number
     weight: number
     notes?: string | null
-    workoutId: number
+    workoutId?: number | null
   }
 
   export type ExerciseUpdateInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    liftType?: StringFieldUpdateOperationsInput | string
+    variation?: StringFieldUpdateOperationsInput | string
     sets?: IntFieldUpdateOperationsInput | number
     reps?: IntFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workout?: WorkoutUpdateOneRequiredWithoutExercisesNestedInput
+    workout?: WorkoutUpdateOneWithoutExercisesNestedInput
   }
 
   export type ExerciseUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
+    liftType?: StringFieldUpdateOperationsInput | string
+    variation?: StringFieldUpdateOperationsInput | string
     sets?: IntFieldUpdateOperationsInput | number
     reps?: IntFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workoutId?: IntFieldUpdateOperationsInput | number
+    workoutId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ExerciseCreateManyInput = {
     id?: number
-    name: string
+    liftType: string
+    variation: string
     sets: number
     reps: number
     weight: number
     notes?: string | null
-    workoutId: number
+    workoutId?: number | null
   }
 
   export type ExerciseUpdateManyMutationInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    liftType?: StringFieldUpdateOperationsInput | string
+    variation?: StringFieldUpdateOperationsInput | string
     sets?: IntFieldUpdateOperationsInput | number
     reps?: IntFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
@@ -5001,12 +5045,13 @@ export namespace Prisma {
 
   export type ExerciseUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
+    liftType?: StringFieldUpdateOperationsInput | string
+    variation?: StringFieldUpdateOperationsInput | string
     sets?: IntFieldUpdateOperationsInput | number
     reps?: IntFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workoutId?: IntFieldUpdateOperationsInput | number
+    workoutId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -5239,14 +5284,26 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type WorkoutScalarRelationFilter = {
-    is?: WorkoutWhereInput
-    isNot?: WorkoutWhereInput
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type WorkoutNullableScalarRelationFilter = {
+    is?: WorkoutWhereInput | null
+    isNot?: WorkoutWhereInput | null
   }
 
   export type ExerciseCountOrderByAggregateInput = {
     id?: SortOrder
-    name?: SortOrder
+    liftType?: SortOrder
+    variation?: SortOrder
     sets?: SortOrder
     reps?: SortOrder
     weight?: SortOrder
@@ -5264,7 +5321,8 @@ export namespace Prisma {
 
   export type ExerciseMaxOrderByAggregateInput = {
     id?: SortOrder
-    name?: SortOrder
+    liftType?: SortOrder
+    variation?: SortOrder
     sets?: SortOrder
     reps?: SortOrder
     weight?: SortOrder
@@ -5274,7 +5332,8 @@ export namespace Prisma {
 
   export type ExerciseMinOrderByAggregateInput = {
     id?: SortOrder
-    name?: SortOrder
+    liftType?: SortOrder
+    variation?: SortOrder
     sets?: SortOrder
     reps?: SortOrder
     weight?: SortOrder
@@ -5304,6 +5363,22 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type WorkoutCreateNestedManyWithoutUserInput = {
@@ -5438,12 +5513,22 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type WorkoutUpdateOneRequiredWithoutExercisesNestedInput = {
+  export type WorkoutUpdateOneWithoutExercisesNestedInput = {
     create?: XOR<WorkoutCreateWithoutExercisesInput, WorkoutUncheckedCreateWithoutExercisesInput>
     connectOrCreate?: WorkoutCreateOrConnectWithoutExercisesInput
     upsert?: WorkoutUpsertWithoutExercisesInput
+    disconnect?: WorkoutWhereInput | boolean
+    delete?: WorkoutWhereInput | boolean
     connect?: WorkoutWhereUniqueInput
     update?: XOR<XOR<WorkoutUpdateToOneWithWhereWithoutExercisesInput, WorkoutUpdateWithoutExercisesInput>, WorkoutUncheckedUpdateWithoutExercisesInput>
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -5598,6 +5683,33 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type WorkoutCreateWithoutUserInput = {
     name: string
     date?: Date | string
@@ -5653,7 +5765,8 @@ export namespace Prisma {
   }
 
   export type ExerciseCreateWithoutWorkoutInput = {
-    name: string
+    liftType: string
+    variation: string
     sets: number
     reps: number
     weight: number
@@ -5662,7 +5775,8 @@ export namespace Prisma {
 
   export type ExerciseUncheckedCreateWithoutWorkoutInput = {
     id?: number
-    name: string
+    liftType: string
+    variation: string
     sets: number
     reps: number
     weight: number
@@ -5723,12 +5837,13 @@ export namespace Prisma {
     OR?: ExerciseScalarWhereInput[]
     NOT?: ExerciseScalarWhereInput | ExerciseScalarWhereInput[]
     id?: IntFilter<"Exercise"> | number
-    name?: StringFilter<"Exercise"> | string
+    liftType?: StringFilter<"Exercise"> | string
+    variation?: StringFilter<"Exercise"> | string
     sets?: IntFilter<"Exercise"> | number
     reps?: IntFilter<"Exercise"> | number
     weight?: FloatFilter<"Exercise"> | number
     notes?: StringNullableFilter<"Exercise"> | string | null
-    workoutId?: IntFilter<"Exercise"> | number
+    workoutId?: IntNullableFilter<"Exercise"> | number | null
   }
 
   export type UserUpsertWithoutWorkoutsInput = {
@@ -5846,7 +5961,8 @@ export namespace Prisma {
 
   export type ExerciseCreateManyWorkoutInput = {
     id?: number
-    name: string
+    liftType: string
+    variation: string
     sets: number
     reps: number
     weight: number
@@ -5854,7 +5970,8 @@ export namespace Prisma {
   }
 
   export type ExerciseUpdateWithoutWorkoutInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    liftType?: StringFieldUpdateOperationsInput | string
+    variation?: StringFieldUpdateOperationsInput | string
     sets?: IntFieldUpdateOperationsInput | number
     reps?: IntFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
@@ -5863,7 +5980,8 @@ export namespace Prisma {
 
   export type ExerciseUncheckedUpdateWithoutWorkoutInput = {
     id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
+    liftType?: StringFieldUpdateOperationsInput | string
+    variation?: StringFieldUpdateOperationsInput | string
     sets?: IntFieldUpdateOperationsInput | number
     reps?: IntFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
@@ -5872,7 +5990,8 @@ export namespace Prisma {
 
   export type ExerciseUncheckedUpdateManyWithoutWorkoutInput = {
     id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
+    liftType?: StringFieldUpdateOperationsInput | string
+    variation?: StringFieldUpdateOperationsInput | string
     sets?: IntFieldUpdateOperationsInput | number
     reps?: IntFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number

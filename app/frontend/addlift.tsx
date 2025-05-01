@@ -9,13 +9,12 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-  Touchable,
 
 } from 'react-native';
-import { useFonts } from 'expo-font';
 import { useRouter, Stack } from 'expo-router';
-import { Picker } from '@react-native-picker/picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 export default function addLift() {
@@ -24,17 +23,66 @@ export default function addLift() {
     const [liftTypeDropdownVisible, setLiftTypeDropdownVisible] = useState(false);
     const [variation, setVariation] = useState('');
     const [variationDropdownVisible, setVariationDropdownVisible] = useState(false);
-    const [expectedRPE, setExpectedRPE] = useState('');
-    const [expectedRPEVisible, setExpectedRPEVisible] = useState(false);
-    const [actualRPE, setActualRPE] = useState('');
-    const [actualRPEVisible, setActualRPEVisible] = useState(false);
+    const [sets, setSets] = useState('');
+    const [reps, setReps] = useState('');
     const [comments, setComments] = useState('');
+    const [userId, setUserId] = useState('');
+    const [workoutId, setWorkoutId] = useState('');
 
 
     const [onPlayVideo, setOnPlayVideo] = useState(false);
     const [videoThumbnailUri, setVideoThumbnailUri] = useState('https://example.com/video-thumbnail.jpg'); // Replace with actual thumbnail URI
 
     const router = useRouter();
+    const getUserId = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem('userId');
+        if (storedUserId) {
+          setUserId(storedUserId);
+        }
+      }catch (error) {
+        console.error('Error retrieving userId:', error);
+      }
+    };
+    getUserId();
+
+    const handleExerciseSubmit = async () => {
+      try {
+        const payload = {
+          userId: parseInt(userId),
+          workoutId: workoutId ? parseInt(workoutId) : null,
+          weight: parseFloat(weight),
+          liftType,
+          variation,
+          sets: parseInt(sets),
+          reps: parseInt(reps),
+          notes: comments // schema uses 'notes' not 'comments'
+        };
+
+        const response = await fetch('http://10.239.152.110:3000/workouts/addExercise', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Server responded with error:', response.status, errorText);
+          throw new Error(`Server error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (data.success) {
+          console.log('Exercise added successfully:', data.exercise);
+          router.replace('/frontend/(tabs)/Home'); // Navigate to home screen
+          // Optionally navigate to another screen or show a success message
+        }
+      }catch (error) {
+        console.error(error);
+      }
+    };
 
     return(
       <SafeAreaView style={styles.container}>
@@ -77,13 +125,8 @@ export default function addLift() {
               {liftTypeDropdownVisible && (
                 // <View style={styles.dropdownOverlay}>
                   <View style={styles.dropdownModal}>
-                    <ScrollView
-                    style={styles.dropdownScroll}
-                    showsVerticalScrollIndicator={true}
-                  >
                     {['Squat', 'Bench Press', 'Deadlift', 'Accessory'].map((item) => (
                       <TouchableOpacity
-                        style={styles.dropdownItem}
                         key={item}
                         onPress={() => {
                           setLiftType(item);
@@ -93,7 +136,6 @@ export default function addLift() {
                         <Text style={styles.dropdownItemText}>{item}</Text>
                       </TouchableOpacity>
                     ))}
-                  </ScrollView>
                   </View> 
               )}
               {/* Weight */}
@@ -145,91 +187,32 @@ export default function addLift() {
             </View>
           </View>
           
-          {/* RPE row */}
-            {/* Expected RPE */}
+          {/* sets/reps row */}
+            {/* sets */}
             <View style={styles.card}>
-              <Text style={styles.cardLabel}>Expected RPE</Text>
-              <TouchableOpacity
-                style={styles.dropdownSelector}
-                onPress={() => {
-                  setExpectedRPEVisible(prev=> !prev)
-                  setActualRPEVisible(false)
-                }}
-              >
-                <Text style={styles.dropdownText}>
-                  {expectedRPE || 'Select Expected RPE'}
-                </Text>
-                <Ionicons
-                  name={expectedRPEVisible ? 'chevron-up' : 'chevron-down'}
-                  size={24}
-                  color="#fff"
-                />
-              </TouchableOpacity>
-
-              {expectedRPEVisible && (
-                <View style={styles.dropdownModal}>
-                  <ScrollView
-                    style={styles.dropdownScroll}
-                    showsVerticalScrollIndicator
-                  >
-                    {[...Array(10)].map((_, i) => (
-                      <TouchableOpacity
-                        style={styles.dropdownItem}
-                        key={i}
-                        onPress={() => {
-                          setExpectedRPE(i + 1);
-                          setExpectedRPEVisible(false);
-                        }}
-                      >
-                        <Text style={styles.dropdownItemText}>{i + 1}</Text>
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
-                </View>
-              )}
+              <Text style={styles.cardLabel}>Sets</Text>
+              <TextInput 
+                style={styles.weightInput}
+                keyboardType="numeric"
+                value={String(sets)}
+                onChangeText={setSets}
+                placeholder='3'
+                placeholderTextColor="#888"
+              />
             </View>
 
-            {/* Actual RPE */}
-            <View style={styles.card}>
-              <Text style={styles.cardLabel}>Actual RPE</Text>
-              <TouchableOpacity
-                style={styles.dropdownSelector}
-                onPress={() => {
-                  setActualRPEVisible(prev=> !prev)
-                  setExpectedRPEVisible(false)
-                }}
-              >
-                <Text style={styles.dropdownText}>
-                  {actualRPE || 'Select Actual RPE'}
-                </Text>
-                <Ionicons
-                  name={actualRPEVisible ? 'chevron-up' : 'chevron-down'}
-                  size={24}
-                  color="#fff"
-                />
-              </TouchableOpacity>
 
-              {actualRPEVisible && (
-                <View style={styles.dropdownModal}>
-                  <ScrollView
-                    style={styles.dropdownScroll}
-                    showsVerticalScrollIndicator
-                  >
-                    {[...Array(10)].map((_, i) => (
-                      <TouchableOpacity
-                        style={styles.dropdownItem}
-                        key={i}
-                        onPress={() => {
-                          setActualRPE(i + 1);
-                          setActualRPEVisible(false);
-                        }}
-                      >
-                        <Text style={styles.dropdownItemText}>{i + 1}</Text>
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
-                </View>
-              )}
+            {/* reps */}
+            <View style={styles.card}>
+              <Text style={styles.cardLabel}>Reps</Text>
+              <TextInput 
+                style={styles.weightInput}
+                keyboardType="numeric"
+                value={String(reps)}
+                onChangeText={setReps}
+                placeholder='12'
+                placeholderTextColor="#888"
+              />
             </View>
           {/* </View> */}
 
@@ -249,15 +232,16 @@ export default function addLift() {
           <TouchableOpacity
             style={styles.addButton}
             onPress={() => {
-              // Handle adding the lift
               console.log('Lift added:', {
+                userId,
                 weight,
                 liftType,
                 variation,
-                expectedRPE,
-                actualRPE,
+                sets,
+                reps,
                 comments,
               });
+              handleExerciseSubmit();
             }}
           >
             <Text style={{ color: '#fff', fontSize: 18, fontFamily: 'Bevan' }}>
@@ -460,7 +444,7 @@ dropdownScroll: {
 },
 addButton: {
   position: 'relative',
-    bottom: -5,
+    bottom: -25,
     width: 400,
     height: 50,
     backgroundColor: '#FFBF00',  // box background

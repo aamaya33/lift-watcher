@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import authRouter from './routes/auth';
+import workoutsRouter from './routes/workouts';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,7 +11,8 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api', authRouter);
+app.use('/api', authRouter); //auth for now 
+app.use('/workouts', workoutsRouter); //workouts for now
 
 // Health check endpoint
 app.get('/health', (req, res) => {

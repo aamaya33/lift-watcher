@@ -16,6 +16,7 @@ import { makeRedirectUri } from 'expo-auth-session';
 import { useRouter, Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { Feather } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Allow the native webview to complete the auth session
 WebBrowser.maybeCompleteAuthSession();
@@ -29,7 +30,7 @@ const handlelogin = async (email: string, password: string, router) => {
   }
   
   try {
-    const response = await fetch('http://10.239.92.197:3000/api/login', {
+    const response = await fetch('http://10.239.152.110:3000/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +43,9 @@ const handlelogin = async (email: string, password: string, router) => {
 
   const json = await response.json();
   if (response.ok) {
-    console.log('User logged in successfully:', json);
+    console.log('User logged in successfully:');
+    // store information in AsyncStorage
+    await AsyncStorage.setItem('userId', String(json.user.id));
     router.replace('/frontend/(tabs)/Home');
   }
   else if (response.status == 400){
@@ -149,7 +152,7 @@ export default function LoginScreen() {
         style={styles.LoginButton}
         // onPress={() => handlelogin(email, password, router)}
         onPress={() => {
-          router.push('/frontend/addlift')
+          handlelogin(email, password, router);
         }}
       >
         {/* need to change this */}

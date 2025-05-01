@@ -27,7 +27,7 @@ const handleregister = async (email: string, password: string, username: string,
   }
   
   try {
-    const response = await fetch('http://10.239.92.197:3000/api/register', {
+    const response = await fetch('http://10.239.152.110:3000/api/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
