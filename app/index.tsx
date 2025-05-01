@@ -29,7 +29,7 @@ const handlelogin = async (email: string, password: string, router) => {
   }
   
   try {
-    const response = await fetch('http://10.239.152.110:3000/api/login', {
+    const response = await fetch('http://10.239.92.197:3000/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -147,7 +147,10 @@ export default function LoginScreen() {
       > */}
       <TouchableOpacity 
         style={styles.LoginButton}
-        onPress={() => handlelogin(email, password, router)}
+        // onPress={() => handlelogin(email, password, router)}
+        onPress={() => {
+          router.push('/frontend/addlift')
+        }}
       >
         {/* need to change this */}
         <Text style={{fontFamily: 'Bevan-Regular', color: '#fff', fontSize: '18'}}>LOGIN</Text> 
@@ -174,7 +177,7 @@ export default function LoginScreen() {
     </View>
     </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -186,8 +189,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     position : 'relative',
-    width: 220,
-    height: 200,
+    width: 275,
+    height: 250,
     bottom: 155,
     resizeMode: 'contain',
   },

@@ -23,7 +23,7 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => {
-          router.replace('/');
+          router.push('/frontend/addlift');
         }}
       >
         <Ionicons name="add" color="#fff" size={72} />

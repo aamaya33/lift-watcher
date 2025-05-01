@@ -37,12 +37,14 @@ model Workout {
 }
 
 model Exercise {
-  id        Int      @id @default(autoincrement())
-  name      String
-  sets      Int
-  reps      Int
-  weight    Float
-  notes     String?
-  workoutId Int
-  workout   Workout  @relation(fields: [workoutId], references: [id])
+  id          Int      @id @default(autoincrement())
+  name        String
+  sets        Int
+  reps        Int
+  weight      Float
+  expectedRPE Int
+  actualRPE   Int
+  notes       String?
+  workoutId   Int
+  workout     Workout  @relation(fields: [workoutId], references: [id])
 }
