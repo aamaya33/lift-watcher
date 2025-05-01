@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 const addExerciseHandler: RequestHandler = async (req, res) => {
     try {
-        const {liftType, weight, variation, sets, reps, comments, userId} = req.body;
+        const {liftType, weight, variation, sets, reps, notes, userId} = req.body;
 
         if (!liftType || !weight || !variation || !sets || !reps) {
             res.status(400).json({ 
@@ -44,7 +44,7 @@ const addExerciseHandler: RequestHandler = async (req, res) => {
                 variation,
                 sets,
                 reps,
-                notes: comments,
+                notes,
             },    
         });
 

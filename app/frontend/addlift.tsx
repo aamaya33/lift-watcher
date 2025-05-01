@@ -11,7 +11,7 @@ import {
   TextInput,
 
 } from 'react-native';
-import { useRouter, Stack } from 'expo-router';
+import { useRouter } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -56,8 +56,9 @@ export default function addLift() {
           variation,
           sets: parseInt(sets),
           reps: parseInt(reps),
-          notes: comments // schema uses 'notes' not 'comments'
+          notes: comments || null // schema uses 'notes' not 'comments'
         };
+        console.log('Submitting payload:', JSON.stringify(payload));
 
         const response = await fetch('http://10.239.152.110:3000/workouts/addExercise', {
           method: 'POST',
@@ -296,9 +297,9 @@ const styles = StyleSheet.create({
   },
   playButton: {
     position: 'absolute',
-    top: 200/2 - 20,
+    top: 125,
     left: '50%',
-    marginLeft: -20,
+    marginLeft: -10,
     width: 40,
     height: 40,
     borderRadius: 20,
