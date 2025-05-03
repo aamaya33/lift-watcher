@@ -1,57 +1,53 @@
 // app/index.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   Image,
   TouchableOpacity,
   StyleSheet,
-  Platform,
-  TextInput,
-  Alert
+  Alert,
+  TextInput
 } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
-import { makeRedirectUri } from 'expo-auth-session';
+
 import { useRouter, Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { Feather } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Allow the native webview to complete the auth session
 WebBrowser.maybeCompleteAuthSession();
 
-const handlelogin = async (email: string, password: string, router) => {
+const handleregister = async (email: string, password: string, username: string, router) => {
   
-  if(!email || !password) {
+  if(!email || !password || !username) {
     console.log('Please fill in all fields');
-    Alert.alert('Please fill in all fields');
+    Alert.alert("Please fill in all fields")
     return;
   }
   
   try {
-    const response = await fetch('http://10.239.152.110:3000/api/login', {
+    const response = await fetch('http://10.239.152.110:3000/api/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         email,
-        password
+        password,
+        username
       })
   });
 
   const json = await response.json();
   if (response.ok) {
-    console.log('User logged in successfully:');
-    // store information in AsyncStorage
-    await AsyncStorage.setItem('userId', String(json.user.id));
+    console.log('User registered successfully:', json);
     router.replace('/frontend/(tabs)/Home');
   }
-  else if (response.status == 400){
+  else if (response.status === 400) {
     Alert.alert(
-      "Login Failed", 
-      "Email or password is incorrect"
+      "Registration Failed", 
+      "Email already exists, try logging in with it"
     );
   }
 
@@ -67,27 +63,13 @@ export default function LoginScreen() {
     'Bevan-Regular': require('../assets/fonts/Bevan-Regular.ttf'),
   });
 
-  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  // Use the redirect URI for the platform
-  const redirectUri =
-    Platform.OS === 'web'
-      ? makeRedirectUri()
-      : // cast to `any` so TS stops complaining about `useProxy`
-        (makeRedirectUri({
-          useProxy: true,
-          projectNameForProxy: 'terrierShowdown',
-        } as any) as string);
-
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    clientId:        '373505230707-iminipiictt02h0bgq26prcg5pph47k4.apps.googleusercontent.com',
-    iosClientId:     '373505230707-6td4lbgd6vvmi8pugflkaub1efp1sfg6.apps.googleusercontent.com',
-    //androidClientId: '<YOUR_ANDROID_CLIENT_ID>.apps.googleusercontent.com', //haven't set this up yet, so commented it out
-    webClientId:     '373505230707-iminipiictt02h0bgq26prcg5pph47k4.apps.googleusercontent.com', //don't mess with these
-    redirectUri,
-  });
 
   // Load the fonts
   if (!fontsLoaded) {
@@ -122,6 +104,14 @@ export default function LoginScreen() {
         autoCapitalize="none"
       />
 
+      <TextInput
+        style={styles.UsernameInput}
+        value={username}
+        onChangeText={setUsername}
+        placeholder="Username:"
+        placeholderTextColor="#888888"
+        autoCapitalize="none"
+      />
     <View style={styles.passwordContainer}>
       <TextInput
         style={styles.passwordField}
@@ -143,44 +133,47 @@ export default function LoginScreen() {
           />
       </TouchableOpacity>
       </View>
-
-      {/* <TouchableOpacity 
-        style={styles.LoginButton}
-        onPress={() => router.replace('/frontend/(tabs)/Home')}
-      > */}
+    
+      <View style={styles.confirmPasswordContainer}>
+      <TextInput
+        style={styles.confirmPasswordField}
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        placeholder="Confirm Password:"
+        placeholderTextColor="#888888"
+        secureTextEntry={!showConfirmPassword}
+        autoCapitalize="none"
+      />
       <TouchableOpacity 
-        style={styles.LoginButton}
-        // onPress={() => handlelogin(email, password, router)}
-        onPress={() => {
-          handlelogin(email, password, router);
-        }}
+          style={styles.eyeIcon} 
+          onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+        >
+          <Feather 
+            name={showConfirmPassword ? "eye" : "eye-off"} 
+            size={24} 
+            color="#888888" 
+          />
+      </TouchableOpacity>
+      </View>
+    
+      <TouchableOpacity 
+        style={styles.RegisterButton}
+        onPress={() => handleregister(email, password, username, router)}
       >
         {/* need to change this */}
-        <Text style={{fontFamily: 'Bevan-Regular', color: '#fff', fontSize: '18'}}>LOGIN</Text> 
+        <Text style={{fontFamily: 'Bevan-Regular', color: '#fff', fontSize: '18'}}>REGISTER</Text> 
       </TouchableOpacity>
 
       <View style={styles.SignUp}>
-        <Text style={{fontFamily: 'Bevan-Regular', color: '#000', fontSize: '14'}}>Don't have an account?</Text>
-        <TouchableOpacity onPress={() => router.replace('/register')}>
-          <Text style={{fontFamily: 'Bevan-Regular', color: '#FFBF00', fontSize: '14'}}> Register!</Text>
+        <Text style={{fontFamily: 'Bevan-Regular', color: '#000', fontSize: '14'}}>Already have an account?</Text>
+        <TouchableOpacity onPress={() => router.replace('/')}>
+          <Text style={{fontFamily: 'Bevan-Regular', color: '#FFBF00', fontSize: '14'}}> Sign In!</Text>
         </TouchableOpacity>
       </View>
-
-      <TouchableOpacity
-        style={styles.googleButton}
-        disabled={!request}
-        onPress={() => promptAsync()}
-      >
-        <Image
-          source={require('../assets/fonts/images/google-logo.png')}
-          style={styles.googleIcon}
-        />
-        <Text style={styles.buttonText}>Sign in with Google</Text>
-      </TouchableOpacity>
     </View>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -192,12 +185,31 @@ const styles = StyleSheet.create({
   },
   logo: {
     position : 'relative',
-    width: 275,
-    height: 250,
-    bottom: 155,
+    width: 220,
+    height: 200,
+    bottom: 125,
     resizeMode: 'contain',
   },
   EmailInput: {
+    position: 'relative',
+    bottom: 105,
+    width: 275,
+    height: 50,
+    fontFamily: 'Bevan-Regular',
+    backgroundColor: '#fff',  // box background
+    borderColor: '#333',      // optional border
+    borderWidth: 1,           // optional border width
+    borderRadius: 16,         // <-- magic for rounded corners
+    padding: 7,             // so the text isn’t squished
+    // optional: shadow on iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    // optional: elevation for Android shadow
+    elevation: 3,
+  },
+  UsernameInput: {
     position: 'relative',
     bottom: 85,
     width: 275,
@@ -220,7 +232,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     bottom: 65,
     width: 275,
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
   },
   passwordField: {
@@ -239,16 +251,40 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  eyeIcon: {
-    position: 'absolute',
-    right: 12,
-  },
-  LoginButton: {
+  confirmPasswordContainer: {
     position: 'relative',
-    bottom: -5,
+    bottom: 70,
+    width: 275,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  confirmPasswordField: {
+    width: '100%',
+    height: 50,
+    fontFamily: 'Bevan-Regular',
+    backgroundColor: '#fff',
+    borderColor: '#333',
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 7,
+    paddingRight: 40, // Make room for the icon
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  eyeIcon: {
+    position: 'relative',
+    right: -115,
+    bottom: 35
+  },
+  RegisterButton: {
+    position: 'relative',
+    bottom: 20,
     width: 275,
     height: 50,
-    backgroundColor: '#000',  // box background
+    backgroundColor: '#FFBF00',  // box background
     borderColor: '#333',      // optional border
     borderWidth: 1,           // optional border width
     borderRadius: 16,         // <-- magic for rounded corners
@@ -269,18 +305,5 @@ const styles = StyleSheet.create({
     bottom: -55,
     flexDirection: 'row'
   },
-
-  googleButton: {
-    position: 'relative',
-    bottom: -100,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 4
-  },
-  
-  googleIcon: { width: 24, height: 24, marginRight: 8},
   buttonText: { fontSize: 16, color: '#000', fontWeight: '600' },
 });
