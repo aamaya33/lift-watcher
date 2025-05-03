@@ -20,7 +20,6 @@ const registerHandler: RequestHandler = async (req, res) => {
             console.log("no email and password")
             return;
           }
-        console.log("registering user", email, password);
         // check if the user exists
         const existingUser = await prisma.user.findUnique({
             where: { email },
@@ -95,6 +94,7 @@ const loginHandler: RequestHandler = async(req,res) => {
       const user = await prisma.user.findUnique({
         where: { email}
       })
+      console.log("User found", user);
 
       if (!user) {
         res.status(400).json({ 
