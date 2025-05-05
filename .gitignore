@@ -27,3 +27,6 @@ ios/build/
 # OS files
 .DS_Store
 *.log
+
+#Prisma dev DB
+backend/prisma/dev.db

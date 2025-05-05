@@ -43,5 +43,6 @@ model Exercise {
   weight      Float
   notes       String?
   workoutId   Int?
+  videoUri    String?
   workout     Workout?  @relation(fields: [workoutId], references: [id])
 }

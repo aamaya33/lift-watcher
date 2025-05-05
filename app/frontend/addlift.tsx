@@ -6,7 +6,6 @@ import {
   Text,
   StyleSheet,
   Platform,
-  Image,
   TouchableOpacity,
   TextInput,
   Alert
