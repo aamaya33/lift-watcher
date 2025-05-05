@@ -6,7 +6,6 @@ import {
   Text,
   StyleSheet,
   Platform,
-  Image,
   TouchableOpacity,
   TextInput,
   Alert
@@ -79,11 +78,12 @@ export default function addLift() {
           variation,
           sets: parseInt(sets),
           reps: parseInt(reps),
-          notes: comments || null // schema uses 'notes' not 'comments'
+          notes: comments || null,
+          videoUri: videoUri || null, //this is just storing the local uri must be changed if we want to expand 
         };
         console.log('Submitting payload:', JSON.stringify(payload));
 
-        const response = await fetch('http://10.239.152.110:3000/workouts/addExercise', {
+        const response = await fetch('http://10.239.134.25:3000/workouts/addExercise', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
