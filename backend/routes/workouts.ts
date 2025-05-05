@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 const addExerciseHandler: RequestHandler = async (req, res) => {
     try {
-        const {liftType, weight, variation, sets, reps, notes, userId} = req.body;
+        const {videoUri, liftType, weight, variation, sets, reps, notes, userId} = req.body;
 
         if (!liftType || !weight || !variation || !sets || !reps) {
             res.status(400).json({ 
@@ -18,7 +18,7 @@ const addExerciseHandler: RequestHandler = async (req, res) => {
         if (!userId) {
             res.status(400).json({ 
               success: false, 
-              message: 'User ID was not passed in' 
+              message: 'User ID was not read successfully' 
             });
             return;
           }
@@ -47,6 +47,7 @@ const addExerciseHandler: RequestHandler = async (req, res) => {
         // create the new workout (for now we assume the user is inputting a workout for the day that they are submitting)
         const newExercise = await prisma.exercise.create({
             data: {
+                videoUri,
                 liftType,
                 weight,
                 variation,
