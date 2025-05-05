@@ -107,7 +107,9 @@ const getExercisesHandler: RequestHandler = async (req, res) => {
                 }
               },
               include: {
-                workout: true
+                workout: {
+                  select: { id: true, name: true, createdAt: true }
+                }
               }
         });
 

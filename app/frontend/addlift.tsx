@@ -79,11 +79,13 @@ export default function addLift() {
           variation,
           sets: parseInt(sets),
           reps: parseInt(reps),
-          notes: comments || null // schema uses 'notes' not 'comments'
+          notes: comments || null, // schema uses 'notes' not 'comments'
+          videoUri: videoUri || null,
+          videoThumbnailUri: videoThumbnailUri || null,
         };
         console.log('Submitting payload:', JSON.stringify(payload));
 
-        const response = await fetch('http://10.239.152.110:3000/workouts/addExercise', {
+        const response = await fetch('http://10.239.29.109:3000/workouts/addExercise', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

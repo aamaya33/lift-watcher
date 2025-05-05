@@ -30,7 +30,7 @@ const handlelogin = async (email: string, password: string, router) => {
   }
   
   try {
-    const response = await fetch('http://10.239.152.110:3000/api/login', {
+    const response = await fetch('http://10.239.29.109:3000/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
